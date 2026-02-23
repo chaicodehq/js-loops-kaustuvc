@@ -38,5 +38,41 @@
  *   // => { selected: [{ color: "golden", length: 5, cost: 250 }], totalLength: 5, totalCost: 250 }
  */
 export function diwaliLightsPlan(lightStrings, budget) {
-  // Your code here
+  let res = {
+    selected: [],
+    totalLength: 0,
+    totalCost: 0
+  }
+  
+  if (!Array.isArray(lightStrings) || typeof budget !== "number" || budget < 0)
+    return res
+  
+  for (const oneLight of lightStrings) {
+    oneLight.cost = 0
+    switch (oneLight.color.toLowerCase()) {
+      case "golden":
+        oneLight.cost = oneLight.length * 50
+        break
+      case "multicolor":
+        oneLight.cost = oneLight.length * 40
+        break
+      case "white":
+        oneLight.cost = oneLight.length * 30
+        break
+      default:
+        oneLight.cost = oneLight.length * 35
+        break
+    }
+    res.selected.push(oneLight)
+    res.totalCost += oneLight.cost
+    res.totalLength += oneLight.length
+  }
+  
+  while (res.totalCost > budget) {
+    let oneLight = res.selected.pop()
+    res.totalCost -= oneLight.cost
+    res.totalLength -= oneLight.length
+  }
+  
+  return res
 }
