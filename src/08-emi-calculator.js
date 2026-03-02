@@ -42,5 +42,31 @@
  *   // => { months: -1, totalPaid: -1, totalInterest: -1 }
  */
 export function calculateEMI(principal, monthlyRate, emi) {
-  // Your code here
+  const res = {
+    months: -1,
+    totalPaid: -1,
+    totalInterest: -1
+  }
+  if (principal < 0 || monthlyRate < 0 || emi < 0)
+    return res
+  let isFirstMonth = true
+  let remaining = principal
+  let interest = 0
+  while (remaining > 0) {
+    interest = parseFloat((remaining * monthlyRate).toFixed(2))
+    if (isFirstMonth) {
+      if (emi <= interest)
+        return res
+      res.months = 0
+      res.totalInterest = 0
+      res.totalPaid = 0
+      isFirstMonth = false
+    }
+    remaining = remaining + interest
+    remaining = remaining - emi
+    res.months++;
+    res.totalInterest += interest
+    res.totalPaid += Math.min(emi, emi + remaining)
+  }
+  return res
 }
