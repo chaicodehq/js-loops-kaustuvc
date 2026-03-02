@@ -36,5 +36,18 @@
  *   rangoli(3) // => ["  *", " * *", "* * *", " * *", "  *"]
  */
 export function rangoli(n) {
-  // Your code here
+  const res = []
+  if (typeof n !== "number" || n <= 0 || !Number.isInteger(n))
+    return res
+  let str = ""
+  let spaces = n - 2
+  for (let i = 0; i < n; i++){
+    str = " ".repeat(Math.max(0, spaces)) + " *".repeat(i + 1)
+    if (i == n - 1)
+      str = str.trim()
+    res[i] = str
+    res[2 * n - 1 - (i + 1)] = str
+    spaces--
+  }
+  return res
 }
